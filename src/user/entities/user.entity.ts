@@ -3,12 +3,15 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Role } from '../models/role.enum';
+import { EventEntity } from 'src/events/entities/event.entity';
+import { RrppEntity } from './rrpp.entity';
 
-@Entity('user')
+@Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -29,10 +32,16 @@ export class UserEntity {
   lastName: string;
 
   @Column()
-  dniNumber: number;
+  dniNumber: string;
 
   @Column()
-  phoneNumber: number;
+  phoneNumber: string;
+
+  @OneToMany(() => EventEntity, (event) => event.productor)
+  events: EventEntity[];
+
+  @OneToMany(() => RrppEntity, (event) => event.productor)
+  rrpps: RrppEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

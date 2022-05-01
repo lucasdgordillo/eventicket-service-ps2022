@@ -7,8 +7,8 @@ export interface User {
   role?: Role;
   firstName?: string;
   lastName?: string;
-  dniNumber?: number;
-  phoneNumber?: number;
+  dniNumber?: string;
+  phoneNumber?: string;
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;

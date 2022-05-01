@@ -18,8 +18,6 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   login(@Body() user: User): Observable<{ token: string }> {
-    return this.authService
-      .login(user)
-      .pipe(map((jwt: string) => ({ token: jwt })));
+    return this.authService.login(user).pipe(map((jwt: string) => ({ token: jwt })));
   }
 }
