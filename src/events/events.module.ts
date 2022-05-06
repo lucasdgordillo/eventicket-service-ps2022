@@ -8,12 +8,14 @@ import { EventPlaceEntity } from './entities/eventPlace.entity';
 import { EventPriceEntity } from './entities/eventPrice.entity';
 import { EventCategoriesService } from './services/eventCategories.service';
 import { EventCategoriesController } from './controllers/eventCategories.controller';
+import { EventPlacesService } from './services/eventPlaces.service';
+import { EventPlacesController } from './controllers/eventPlaces.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([ EventEntity, EventCategoriesEntity, EventPlaceEntity, EventPriceEntity ])
   ],
-  providers: [EventsService, EventCategoriesService],
-  controllers: [EventsController, EventCategoriesController]
+  providers: [EventsService, EventCategoriesService, EventPlacesService],
+  controllers: [EventsController, EventCategoriesController, EventPlacesController]
 })
 export class EventsModule {}
