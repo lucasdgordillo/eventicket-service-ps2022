@@ -1,8 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { EventDto } from '../dtos/event.dto';
-import { EventEntity } from '../entities/event.entity';
 import { EventsService } from '../services/events.service';
 
 @Controller('events')
@@ -32,12 +30,14 @@ export class EventsController {
     return { message: 'Delete Success' };
   }
 
+  @UseGuards(JwtGuard)
   @Get()
   async getEvents() {
     const data = await this.eventsService.getAllEvents();
     return { data };
   }
 
+  @UseGuards(JwtGuard)
   @Get(':id')
   async getEvent(@Param('id') id: number) {
     const data = await this.eventsService.getEventById(id);
