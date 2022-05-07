@@ -10,7 +10,7 @@ export class EventsService {
 
   constructor(
     @InjectRepository(EventEntity)
-    private readonly eventRepository: Repository<EventEntity> 
+    private readonly eventRepository: Repository<EventEntity>
   ) {}
 
   async createEvent(eventData: EventDto, user: UserEntity) {
