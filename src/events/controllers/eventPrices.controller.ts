@@ -9,7 +9,6 @@ export class EventPricesController {
     private eventPricesService: EventPricesService
   ) {}
   
-  @UseGuards(JwtGuard)
   @Put(':id')
   async updateEventPrices(@Param('id') eventId: number, @Body() newPrices: EventPriceDto[]) {
     const data = this.eventPricesService.updateEventPrices(eventId, newPrices);
