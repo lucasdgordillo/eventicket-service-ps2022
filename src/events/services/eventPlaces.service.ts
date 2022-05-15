@@ -26,7 +26,7 @@ export class EventPlacesService {
   }
 
   async getAllPlaces() {
-    return await this.eventPlacesRepository.find();
+    return await this.eventPlacesRepository.find({ relations: ['province'] });
   }
 
   async getEventPlaceById(id: number) {
