@@ -9,4 +9,8 @@ export class RrppDto {
   @IsNotEmpty()
   @IsNumber()
   salePercentage: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  productor: UserEntity;
 }

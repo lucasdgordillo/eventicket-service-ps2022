@@ -9,8 +9,8 @@ export class RrppController {
   ) {}
 
   @Post('create')
-  async createRrpp(@Body() rrppData: RrppDto, @Request() req) {
-    const data = this.rrppService.create(rrppData, req.user);
+  async createRrpp(@Body() rrppData: RrppDto) {
+    const data = this.rrppService.create(rrppData);
     return { message: 'Create Success', data };
   }
 

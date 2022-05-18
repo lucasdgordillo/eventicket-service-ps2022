@@ -12,8 +12,8 @@ export class RrppService {
     private readonly rrppRepository: Repository<RrppEntity>
   ) {}
 
-  async create(rrppData: RrppDto, user: UserEntity) {
-    const event = this.rrppRepository.create({ ...rrppData, productor: user });
+  async create(rrppData: RrppDto) {
+    const event = this.rrppRepository.create({ ...rrppData });
     return await this.rrppRepository.save(event);
   }
 

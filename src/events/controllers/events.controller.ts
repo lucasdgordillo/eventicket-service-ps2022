@@ -9,6 +9,7 @@ export class EventsController {
     private eventsService: EventsService
   ) {}
   
+  @UseGuards(JwtGuard)
   @Post('create')
   async createEvent(@Body() eventData: EventDto, @Request() req) {
     const data = this.eventsService.createEvent(eventData, req.user);
