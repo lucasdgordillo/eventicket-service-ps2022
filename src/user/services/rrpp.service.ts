@@ -3,7 +3,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { RrppDto } from "../dtos/rrpp.dto";
 import { RrppEntity } from "../entities/rrpp.entity";
-import { UserEntity } from "../entities/user.entity";
 
 @Injectable()
 export class RrppService {

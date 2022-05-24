@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './events/events.module';
+import { PurchasesModule } from './purchases/purchases.module';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
 
@@ -24,6 +25,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
     UserModule,
     EventsModule,
+    PurchasesModule,
     SharedModule
   ],
   controllers: [AppController],

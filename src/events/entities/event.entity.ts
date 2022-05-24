@@ -11,6 +11,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { EventCategoriesEntity } from './eventCategory.entity';
+import { EventPlaceEntity } from './eventPlace.entity';
 import { EventPriceEntity } from './eventPrice.entity';
 
 @Entity('events')
@@ -36,6 +37,10 @@ export class EventEntity {
   @ManyToOne(() => EventCategoriesEntity)
   @JoinColumn()
   category: EventCategoriesEntity;
+
+  @ManyToOne(() => EventPlaceEntity)
+  @JoinColumn()
+  place: EventPlaceEntity;
 
   @OneToMany(() => EventPriceEntity, eventPrice => eventPrice.event, { eager: true, cascade: true })
   prices: EventPriceEntity[];

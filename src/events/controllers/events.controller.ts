@@ -28,9 +28,10 @@ export class EventsController {
     return { message: 'Delete Success' };
   }
 
+  @UseGuards(JwtGuard)
   @Get()
-  async getEvents() {
-    const data = await this.eventsService.getAllEvents();
+  async getEvents(@Request() req) {
+    const data = await this.eventsService.getAllEvents(req.user);
     return { data };
   }
 

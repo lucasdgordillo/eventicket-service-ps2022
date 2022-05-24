@@ -12,6 +12,7 @@ import { RrppController } from './controllers/rrpp.controller';
     TypeOrmModule.forFeature([ UserEntity, RrppEntity ])
   ],
   providers: [UserService, RrppService],
-  controllers: [UserController, RrppController]
+  controllers: [UserController, RrppController],
+  exports: [ RrppService ]
 })
 export class UserModule {}

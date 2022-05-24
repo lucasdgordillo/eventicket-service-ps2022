@@ -3,6 +3,7 @@
 import { IsArray, IsDate, IsNotEmpty, IsNumber, isObject, IsObject, IsOptional, isString, IsString } from 'class-validator';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { EventCategoriesEntity } from '../entities/eventCategory.entity';
+import { EventPlaceEntity } from '../entities/eventPlace.entity';
 import { EventPriceEntity } from '../entities/eventPrice.entity';
 
 export class EventDto {
@@ -46,8 +47,10 @@ export class EventDto {
   productor: UserEntity;
 
   @IsNotEmpty()
-  // @IsNumber()
   category: EventCategoriesEntity;
+
+  @IsNotEmpty()
+  place: EventPlaceEntity;
   
   @IsArray()
   @IsOptional()
