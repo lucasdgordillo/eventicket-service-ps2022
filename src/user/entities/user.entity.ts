@@ -31,6 +31,9 @@ export class UserEntity {
   @Column()
   lastName: string;
 
+  @Column({ nullable: true }) // Uso exclusivo para productoras
+  displayName: string;
+
   @Column()
   dniNumber: string;
 

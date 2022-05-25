@@ -7,6 +7,7 @@ export interface User {
   role?: Role;
   firstName?: string;
   lastName?: string;
+  displayName?: string;
   dniNumber?: string;
   phoneNumber?: string;
   createdAt?: Date;

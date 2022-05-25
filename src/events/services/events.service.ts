@@ -31,10 +31,10 @@ export class EventsService {
     if (user.role === Role.PRODUCTOR) {
       return await this.eventRepository.find({ relations: { productor: true, category: true, place: true }, where: { productor: { id: user.id }}});
     }
-    return await this.eventRepository.find();
+    return await this.eventRepository.find({ relations: { productor: true, category: true, place: true }});
   }
 
   async getEventById(id: number) {
-    return await this.eventRepository.findOne({ where: [{ id }]});
+    return await this.eventRepository.findOne({ relations: { productor: true, category: true, place: true }, where: [{ id }]});
   }
 }

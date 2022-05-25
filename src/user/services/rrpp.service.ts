@@ -31,4 +31,8 @@ export class RrppService {
   async getById(id: number) {
     return await this.rrppRepository.findOne({ where: [{ id }]});
   }
+
+  async getByProductorId(productorId: number) {
+    return await this.rrppRepository.find({ relations: { productor: true }, where: [{ productor: { id: productorId } }]});
+  }
 }

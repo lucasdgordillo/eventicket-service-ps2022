@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Request } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Request } from "@nestjs/common";
 import { RrppDto } from "../dtos/rrpp.dto";
 import { RrppService } from "../services/rrpp.service";
 
@@ -36,5 +36,14 @@ export class RrppController {
   async getRrpp(@Param('id') id: number) {
     const data = await this.rrppService.getById(id);
     return { data };
+  }
+
+  @Get('/by-productor/:productorId')
+  async getAllRrppByProductorId(@Param('productorId') productorId: number) {
+    return this.rrppService.getByProductorId(productorId).then(async (rrpps) => {
+      return { data: rrpps };
+    }).catch(e => {
+      throw new HttpException(e.response, e.status);
+    });
   }
 }
