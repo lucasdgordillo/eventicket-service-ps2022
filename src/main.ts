@@ -7,6 +7,10 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   app.enableCors();
-  await app.listen(5432);
+  const PORT = process.env.POSTGRES_PORT || '0.0.0.0';
+  console.log(PORT);
+  await app.listen(PORT, function () {
+    console.log('App listening on port');
+  });
 }
 bootstrap();
