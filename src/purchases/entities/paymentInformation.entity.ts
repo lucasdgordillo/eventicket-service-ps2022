@@ -23,10 +23,7 @@ export class PaymentInfoEntity {
   card_number: string;
 
   @Column({ nullable: false })
-  expiration_day: number;
-
-  @Column({ nullable: false })
-  expiration_year: number;
+  expiration_date: string;
 
   @Column({ type: "enum", enum: PaymentType })
   payment_type: PaymentType;
