@@ -5,6 +5,7 @@ import { UserModule } from "src/user/user.module";
 import { PurchasesController } from "./controllers/purchases.controller";
 import { InvoiceEntity } from "./entities/invoice.entity";
 import { InvoiceDetailEntity } from "./entities/invoiceDetail.entity";
+import { PaymentInfoEntity } from "./entities/paymentInformation.entity";
 import { PurchaseEntity } from "./entities/purchase.entity";
 import { RrppCommissionEntity } from "./entities/rrppCommission.entity";
 import { PurchasesService } from "./services/purchases.service";
@@ -12,7 +13,7 @@ import { RrppCommissionsService } from "./services/rrppCommissions.service";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ InvoiceEntity, InvoiceDetailEntity, PurchaseEntity, RrppCommissionEntity ]),
+    TypeOrmModule.forFeature([ InvoiceEntity, InvoiceDetailEntity, PurchaseEntity, RrppCommissionEntity, PaymentInfoEntity ]),
     UserModule
   ],
   providers: [ PurchasesService, RrppCommissionsService ],

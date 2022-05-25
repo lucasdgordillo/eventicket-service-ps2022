@@ -1,21 +1,15 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { InvoiceDetailEntity } from "./invoiceDetail.entity";
+import { PaymentInfoEntity } from "./paymentInformation.entity";
 import { PurchaseEntity } from "./purchase.entity";
-
-export enum PaymentType {
-  VISA_DEBIT = "visa_debit",
-  VISA_CREDIT = "visa_credit",
-  MASTERCARD_DEBIT = "mastercard_debit",
-  MASTERCARD_CREDIT = "mastercard_credit"
-}
-
 @Entity('invoices')
 export class InvoiceEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: "enum", enum: PaymentType })
-  payment_type: PaymentType;
+  @OneToOne(() => PaymentInfoEntity, (paymentInfo) => paymentInfo.invoice)
+  @JoinColumn()
+  payment_info: PaymentInfoEntity;
 
   @Column({ nullable: false }) // Total sin comision de service charge
   total_without_fee: number;
