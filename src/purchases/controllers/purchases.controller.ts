@@ -1,0 +1,47 @@
+import { Body, Controller, Get, HttpException, Inject, Post, Request, UseGuards } from "@nestjs/common";
+import { JwtGuard } from "src/auth/guards/jwt.guard";
+import { RrppService } from "src/user/services/rrpp.service";
+import { PurchaseDto } from "../dtos/purchase.dto";
+import { PurchaseStatus } from "../entities/purchase.entity";
+import { GenerateCodeHelper } from "../helpers/generateCodes.helper";
+import { PurchasesService } from "../services/purchases.service";
+import { RrppCommissionsService } from "../services/rrppCommissions.service";
+
+@Controller('purchases')
+export class PurchasesController {
+  constructor(
+    private purchasesService: PurchasesService,
+    private rrppService: RrppService,
+    private rrppCommissionsService: RrppCommissionsService
+  ) {}
+
+  @UseGuards(JwtGuard)
+  @Post('create')
+  async registerNewPurchase(@Body() purchaseData: PurchaseDto, @Request() req) {
+    const purchaseCode = GenerateCodeHelper.generateRandomCode();
+
+    if (purchaseData.rrpp) {
+      const rrppId = Number(purchaseData.rrpp);
+      this.rrppService.getById(rrppId).then(async (rrppData) => {
+        if (!rrppData) { return; }
+        this.rrppCommissionsService.create(rrppData, purchaseData);
+      });
+    }
+
+    return this.purchasesService.createNewPurchase(purchaseData, req.user, purchaseCode).then(async () => {
+      return { message: 'Create Success' };
+    }).catch(e => {
+      throw new HttpException(e.response, e.status);
+    });
+  }
+
+  @UseGuards(JwtGuard)
+  @Get()
+  async getPurchases(@Request() req) {
+    return this.purchasesService.getAllPurchases(req.user).then(async (purchases) => {
+      return { data: purchases };
+    }).catch(e => {
+      throw new HttpException(e.response, e.status);
+    });
+  }
+}
