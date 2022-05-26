@@ -43,7 +43,7 @@ export class EventDto {
   @IsString()
   endSellDateTime: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   productor: UserEntity;
 
   @IsNotEmpty()
