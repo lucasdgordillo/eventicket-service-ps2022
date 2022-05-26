@@ -23,7 +23,7 @@ export class PaymentInfoEntity {
   card_number: string;
 
   @Column({ nullable: false })
-  expiration_date: string;
+  expiration_date: string ;
 
   @Column({ type: "enum", enum: PaymentType })
   payment_type: PaymentType;
@@ -34,7 +34,7 @@ export class PaymentInfoEntity {
   @Column({ nullable: false })
   dniNumber: string;
 
-  @OneToOne(() => InvoiceEntity, (invoice) => invoice.payment_info, { cascade: true })
+  @OneToOne(() => InvoiceEntity, (invoice) => invoice.payment_info)
   invoice: InvoiceEntity;
 
   @CreateDateColumn()

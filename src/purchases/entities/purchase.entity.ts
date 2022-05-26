@@ -39,7 +39,7 @@ export class PurchaseEntity {
   @Column({ type: "enum", enum: PurchaseStatus, default: PurchaseStatus.NOT_VERIFIED })
   status: PurchaseStatus;
 
-  @Column()
+  @Column({ nullable: false })
   purchase_code: string;
 
   @CreateDateColumn()

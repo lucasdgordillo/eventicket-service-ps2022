@@ -7,7 +7,7 @@ export class InvoiceEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => PaymentInfoEntity, (paymentInfo) => paymentInfo.invoice)
+  @OneToOne(() => PaymentInfoEntity, (paymentInfo) => paymentInfo.invoice, { cascade: true })
   @JoinColumn()
   payment_info: PaymentInfoEntity;
 

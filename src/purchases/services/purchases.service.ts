@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Observable } from "rxjs";
 import { UserEntity } from "src/user/entities/user.entity";
 import { Role } from "src/user/models/role.enum";
 import { Repository } from "typeorm";
@@ -18,10 +19,18 @@ export class PurchasesService {
     return await this.purchaseRepository.save(purchase);
   }
 
+  async updatePurchaseStatus(purchaseId: number, purchaseStatus: PurchaseStatus) {
+    return await this.purchaseRepository.update(purchaseId, { status: purchaseStatus });
+  }
+
   async getAllPurchases(user: UserEntity) {
     if (user.role === Role.USER) {
-      return await this.purchaseRepository.find({ relations: { user: true, productor: true, event: true, invoice: true, rrpp: true }, where: { user: { id: user.id }}});
+      return await this.purchaseRepository.find({ relations: { user: true, productor: true, event: { place: true }, invoice: true, rrpp: true }, where: { user: { id: user.id }}});
     }
     return await this.purchaseRepository.find();
+  }
+
+  async getPurchaseByCode(purchaseCode, status: PurchaseStatus) {
+    return await this.purchaseRepository.findOne({ relations: { event: true }, where: { purchase_code: purchaseCode, status: status }});
   }
 }

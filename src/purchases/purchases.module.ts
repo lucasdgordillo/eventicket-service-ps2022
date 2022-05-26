@@ -8,15 +8,17 @@ import { InvoiceDetailEntity } from "./entities/invoiceDetail.entity";
 import { PaymentInfoEntity } from "./entities/paymentInformation.entity";
 import { PurchaseEntity } from "./entities/purchase.entity";
 import { RrppCommissionEntity } from "./entities/rrppCommission.entity";
+import { ScannedPurchaseEntity } from "./entities/scannedPurchase.entity";
 import { PurchasesService } from "./services/purchases.service";
 import { RrppCommissionsService } from "./services/rrppCommissions.service";
+import { ScannedPurchasesService } from "./services/scannedPurchases.service";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ InvoiceEntity, InvoiceDetailEntity, PurchaseEntity, RrppCommissionEntity, PaymentInfoEntity ]),
+    TypeOrmModule.forFeature([ InvoiceEntity, InvoiceDetailEntity, PurchaseEntity, RrppCommissionEntity, PaymentInfoEntity, ScannedPurchaseEntity ]),
     UserModule
   ],
-  providers: [ PurchasesService, RrppCommissionsService ],
+  providers: [ PurchasesService, RrppCommissionsService, ScannedPurchasesService ],
   controllers: [ PurchasesController ]
 })
 export class PurchasesModule {}
