@@ -59,6 +59,7 @@ export class PurchasesController {
       
       return this.purchasesService.updatePurchaseStatus(purchase.id, PurchaseStatus.VERIFIED).then(async () => {
         const scannedData: ScannedPurchaseDto = {
+          purchase: purchase,
           scanned_date: purchaseData.scanned_date,
           event: purchase.event,
           purchase_code: purchaseData.purchase_code
@@ -73,9 +74,9 @@ export class PurchasesController {
   }
 
   @UseGuards(JwtGuard)
-  @Get()
+  @Get('/scanned-purchases')
   async getScannedPurchases(@Request() req) {
-    return this.purchasesService.getAllPurchases(req.user).then(async (scannedPurchases) => {
+    return this.scannedPurchasesService.getAllScannedPurchases(req.user).then(async (scannedPurchases) => {
       return { data: scannedPurchases };
     }).catch(e => {
       throw new HttpException(e.response, e.status);

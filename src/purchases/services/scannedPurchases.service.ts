@@ -18,6 +18,6 @@ export class ScannedPurchasesService {
   }
 
   async getAllScannedPurchases(user: UserEntity) {
-    return await this.scannedPurchaseRepository.find({ relations: { checker: true, event: true }, where: { checker: { id: user.id }}});
+    return await this.scannedPurchaseRepository.find({ relations: { checker: true, event: true, purchase: true }, where: { checker: { id: user.id }}});
   }
 }
