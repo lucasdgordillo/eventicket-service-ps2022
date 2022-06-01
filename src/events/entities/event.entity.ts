@@ -58,11 +58,11 @@ export class EventEntity {
   endTime: string;
 
   // Fecha y hora de inicializacion de venta
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp' })
   releaseSellDateTime: string;
   
   // Fecha y hora de finalizacion de venta
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp' })
   endSellDateTime: string;
 
   @CreateDateColumn()
