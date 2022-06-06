@@ -21,7 +21,7 @@ export class PurchasesController {
   @UseGuards(JwtGuard)
   @Post('create')
   async registerNewPurchase(@Body() purchaseData: PurchaseDto, @Request() req) {
-    const purchaseCode = GenerateCodeHelper.generateRandomCode();
+    const purchaseCode = GenerateCodeHelper.generateRandomAlfanumericCode();
 
     if (purchaseData.rrpp) {
       const rrppId = Number(purchaseData.rrpp);
