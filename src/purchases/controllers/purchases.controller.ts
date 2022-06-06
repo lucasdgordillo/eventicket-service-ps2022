@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Inject, Post, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, Inject, Param, Post, Request, UseGuards } from "@nestjs/common";
 import { JwtGuard } from "src/auth/guards/jwt.guard";
 import { RrppService } from "src/user/services/rrpp.service";
 import { PurchaseDto } from "../dtos/purchase.dto";
@@ -43,6 +43,16 @@ export class PurchasesController {
   async getPurchases(@Request() req) {
     return this.purchasesService.getAllPurchases(req.user).then(async (purchases) => {
       return { data: purchases };
+    }).catch(e => {
+      throw new HttpException(e.response, e.status);
+    });
+  }
+
+  @UseGuards(JwtGuard)
+  @Get(':purchase_code')
+  async getPurchaseById(@Param('purchase_code') purchaseCode: string) {
+    return this.purchasesService.getPurchaseByCode(purchaseCode, PurchaseStatus.NOT_VERIFIED).then(async (purchase) => {
+      return { data: purchase };
     }).catch(e => {
       throw new HttpException(e.response, e.status);
     });
