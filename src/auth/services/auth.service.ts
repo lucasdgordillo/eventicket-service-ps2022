@@ -21,7 +21,7 @@ export class AuthService {
   }
 
   registerAccount(user: User): Observable<any> {
-    const { email, password, role, firstName, lastName, dniNumber, phoneNumber, displayName } = user;
+    const { email, password, role, firstName, lastName, dniNumber, phoneNumber, displayName, province } = user;
 
     return this.hashPassword(password).pipe(
       switchMap((hashedPassword: string) => {
@@ -33,7 +33,8 @@ export class AuthService {
           role: role,
           dniNumber: dniNumber,
           phoneNumber: phoneNumber,
-          displayName: displayName
+          displayName: displayName,
+          province: province
         })).pipe(
           map((user: User) => {
             delete user.password;
@@ -47,7 +48,7 @@ export class AuthService {
   validateUser(email: string, password: string): Observable<User> {
     return from(
       this.userRepository.findOne({
-        select: ['id', 'email', 'password', 'role', 'firstName', 'lastName', 'dniNumber', 'phoneNumber', 'displayName'],
+        select: ['id', 'email', 'password', 'role', 'firstName', 'lastName', 'dniNumber', 'phoneNumber', 'displayName', 'province'],
         where: { email }}
       )
     ).pipe(

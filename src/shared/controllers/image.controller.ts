@@ -7,7 +7,7 @@ import { join } from "path";
 export class ImageController {
 
   constructor() {}
-  
+
   @Post('upload')
   @UseInterceptors(FileInterceptor('file', saveImageToStorage))
   async uploadImage(@UploadedFile() file: Express.Multer.File) {

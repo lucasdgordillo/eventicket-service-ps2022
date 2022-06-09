@@ -31,6 +31,6 @@ export class PurchasesService {
   }
 
   async getPurchaseByCode(purchaseCode, status: PurchaseStatus) {
-    return await this.purchaseRepository.findOne({ relations: { event: true, productor: true, user: true, invoice: { invoice_details: true, payment_info: true } }, where: { purchase_code: purchaseCode, status: status }});
+    return await this.purchaseRepository.findOne({ relations: { event: true, productor: { province: true }, user: { province: true }, invoice: { invoice_details: true, payment_info: true } }, where: { purchase_code: purchaseCode, status: status }});
   }
 }

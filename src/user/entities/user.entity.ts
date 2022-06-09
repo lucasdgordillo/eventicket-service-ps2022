@@ -3,6 +3,8 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -10,6 +12,7 @@ import {
 import { Role } from '../models/role.enum';
 import { EventEntity } from 'src/events/entities/event.entity';
 import { RrppEntity } from './rrpp.entity';
+import { ProvinceEntity } from 'src/shared/entities/province.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -45,6 +48,10 @@ export class UserEntity {
 
   @OneToMany(() => RrppEntity, (event) => event.productor)
   rrpps: RrppEntity[];
+
+  @ManyToOne(() => ProvinceEntity)
+  @JoinColumn()
+  province: ProvinceEntity;
 
   @CreateDateColumn()
   createdAt: Date;
