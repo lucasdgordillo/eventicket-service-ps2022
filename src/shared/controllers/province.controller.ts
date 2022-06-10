@@ -8,7 +8,7 @@ export class ProvinceController {
   ) {}
 
   @Get()
-  async getEvents() {
+  async getAllProvinces() {
     const data = await this.provinceService.getAll();
     return { data };
   }

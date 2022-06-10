@@ -53,6 +53,10 @@ export class UserEntity {
   @JoinColumn()
   province: ProvinceEntity;
 
+  @ManyToOne(() => UserEntity)
+  @JoinColumn()
+  createdBy: UserEntity;
+
   @CreateDateColumn()
   createdAt: Date;
 

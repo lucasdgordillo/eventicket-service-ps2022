@@ -20,7 +20,7 @@ export class AuthService {
     return from(bcrypt.hash(password, 12));
   }
 
-  registerAccount(user: User): Observable<any> {
+  registerAccount(user: User, createdBy: null): Observable<any> {
     const { email, password, role, firstName, lastName, dniNumber, phoneNumber, displayName, province } = user;
 
     return this.hashPassword(password).pipe(
@@ -34,7 +34,8 @@ export class AuthService {
           dniNumber: dniNumber,
           phoneNumber: phoneNumber,
           displayName: displayName,
-          province: province
+          province: province,
+          createdBy: createdBy
         })).pipe(
           map((user: User) => {
             delete user.password;
@@ -48,7 +49,7 @@ export class AuthService {
   validateUser(email: string, password: string): Observable<User> {
     return from(
       this.userRepository.findOne({
-        select: ['id', 'email', 'password', 'role', 'firstName', 'lastName', 'dniNumber', 'phoneNumber', 'displayName', 'province'],
+        select: ['id', 'email', 'password', 'role', 'firstName', 'lastName', 'dniNumber', 'phoneNumber', 'displayName', 'province', 'createdBy'],
         where: { email }}
       )
     ).pipe(

@@ -1,8 +1,8 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Request } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { User } from 'src/user/models/user.interface';
 import { AuthService } from '../services/auth.service';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Controller('auth')
 export class AuthController {
@@ -11,8 +11,10 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  registerUser(@Body() user: User): Observable<any> {
-    return this.authService.registerAccount(user)
+  registerUser(@Body() user: User, @Request() req): Observable<any> {
+    const createdBy = req && req.user ? req.user : null;
+
+    return this.authService.registerAccount(user, createdBy)
   }
 
   @Post('login')
