@@ -1,12 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { EventDto } from '../dtos/event.dto';
+import { EventPricesService } from '../services/eventPrinces.service';
 import { EventsService } from '../services/events.service';
 
 @Controller('events')
 export class EventsController {
   constructor(
-    private eventsService: EventsService
+    private eventsService: EventsService,
+    private eventPricesService: EventPricesService
   ) {}
   
   @UseGuards(JwtGuard)
@@ -24,8 +26,13 @@ export class EventsController {
 
   @Delete(':id')
   async deleteEvent(@Param('id') id: number) {
-    const data = this.eventsService.deleteEvent(id);
-    return { message: 'Delete Success' };
+    return this.eventsService.deleteEvent(id).then(async () => {
+      return this.eventPricesService.deleteEventPrices(id).then(async () => {
+        return { message: 'Delete Success' };  
+      });
+    }).catch(e => {
+      throw new HttpException(e.response, e.status);
+    });
   }
 
   @UseGuards(JwtGuard)

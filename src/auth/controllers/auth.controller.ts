@@ -11,10 +11,8 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  registerUser(@Body() user: User, @Request() req): Observable<any> {
-    const createdBy = req && req.user ? req.user : null;
-
-    return this.authService.registerAccount(user, createdBy)
+  registerUser(@Body() user: User): Observable<any> {
+    return this.authService.registerAccount(user)
   }
 
   @Post('login')

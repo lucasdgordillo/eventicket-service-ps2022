@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Request } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Request, UseGuards } from "@nestjs/common";
+import { JwtGuard } from "src/auth/guards/jwt.guard";
 import { RrppDto } from "../dtos/rrpp.dto";
 import { RrppService } from "../services/rrpp.service";
 
@@ -26,10 +27,14 @@ export class RrppController {
     return { message: 'Delete Success' };
   }
 
+  @UseGuards(JwtGuard)
   @Get()
-  async getAllRrpps() {
-    const data = await this.rrppService.getAll();
-    return { data };
+  async getAllRrpps(@Request() req) {
+    return this.rrppService.getAll(req.user).then(async (rrpps) => {
+      return { data: rrpps };
+    }).catch(e => {
+      throw new HttpException(e.response, e.status);
+    });
   }
 
   @Get(':id')

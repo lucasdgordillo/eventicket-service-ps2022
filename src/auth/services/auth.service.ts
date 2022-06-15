@@ -20,8 +20,8 @@ export class AuthService {
     return from(bcrypt.hash(password, 12));
   }
 
-  registerAccount(user: User, createdBy: null): Observable<any> {
-    const { email, password, role, firstName, lastName, dniNumber, phoneNumber, displayName, province } = user;
+  registerAccount(user: User): Observable<any> {
+    const { email, password, role, firstName, lastName, dniNumber, phoneNumber, displayName, province, createdBy } = user;
 
     return this.hashPassword(password).pipe(
       switchMap((hashedPassword: string) => {

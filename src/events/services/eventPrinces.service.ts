@@ -26,4 +26,8 @@ export class EventPricesService {
 
     return await newPrices;
   }
+
+  async deleteEventPrices(eventId: number) {
+    return await this.eventPricesRepository.softDelete({ event: { id: eventId } });
+  }
 }

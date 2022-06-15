@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { RrppDto } from "../dtos/rrpp.dto";
 import { RrppEntity } from "../entities/rrpp.entity";
+import { UserEntity } from "../entities/user.entity";
 
 @Injectable()
 export class RrppService {
@@ -24,8 +25,8 @@ export class RrppService {
     return await this.rrppRepository.softDelete(id);
   }
 
-  async getAll() {
-    return await this.rrppRepository.find();
+  async getAll(user: UserEntity) {
+    return await this.rrppRepository.find({ relations: { productor: true }, where: [{ productor: { id: user.id } }]});
   }
 
   async getById(id: number) {
