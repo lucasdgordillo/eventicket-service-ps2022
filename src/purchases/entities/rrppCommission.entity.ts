@@ -1,5 +1,5 @@
 import { EventEntity } from "src/events/entities/event.entity";
-import { UserEntity } from "src/user/entities/user.entity";
+import { RrppEntity } from "src/user/entities/rrpp.entity";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('rrppCommissions')
@@ -7,9 +7,9 @@ export class RrppCommissionEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => RrppEntity)
   @JoinColumn()
-  rrpp: UserEntity;
+  rrpp: RrppEntity;
 
   @ManyToOne(() => EventEntity)
   @JoinColumn()

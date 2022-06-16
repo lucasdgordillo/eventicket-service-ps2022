@@ -19,6 +19,7 @@ import { ScannedPurchasesService } from "./services/scannedPurchases.service";
     UserModule
   ],
   providers: [ PurchasesService, RrppCommissionsService, ScannedPurchasesService ],
-  controllers: [ PurchasesController ]
+  controllers: [ PurchasesController ],
+  exports: [ RrppCommissionsService, PurchasesService ]
 })
 export class PurchasesModule {}

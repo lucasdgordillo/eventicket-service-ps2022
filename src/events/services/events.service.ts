@@ -35,6 +35,6 @@ export class EventsService {
   }
 
   async getEventById(id: number) {
-    return await this.eventRepository.findOne({ relations: { productor: true, category: true, place: true }, where: [{ id }]});
+    return await this.eventRepository.findOne({ relations: { productor: true, category: true, place: true, prices: true }, where: [{ id }]});
   }
 }

@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './events/events.module';
 import { PurchasesModule } from './purchases/purchases.module';
+import { ReportsModule } from './reports/reports.module';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
 
@@ -27,6 +28,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     EventsModule,
     PurchasesModule,
+    ReportsModule,
     SharedModule
   ],
   controllers: [AppController],

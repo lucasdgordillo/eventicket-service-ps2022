@@ -25,12 +25,45 @@ export class PurchasesService {
 
   async getAllPurchases(user: UserEntity) {
     if (user.role === Role.USER) {
-      return await this.purchaseRepository.find({ relations: { user: true, productor: true, event: { place: true }, invoice: true, rrpp: true }, where: { user: { id: user.id }}});
+      return await this.purchaseRepository.find({ relations: { user: true, productor: true, event: { place: true }, invoice: { invoice_details: true }, rrpp: true }, where: { user: { id: user.id }}});
     }
     return await this.purchaseRepository.find();
   }
 
   async getPurchaseByCode(purchaseCode, status: PurchaseStatus) {
     return await this.purchaseRepository.findOne({ relations: { event: true, productor: { province: true }, user: { province: true }, invoice: { invoice_details: true, payment_info: true } }, where: { purchase_code: purchaseCode, status: status }});
+  }
+
+  async getReportBySales(user: UserEntity, params: any) {
+    const query = this.purchaseRepository.createQueryBuilder("purchases")
+                  .select("ev.title", "eventName")
+                  .addSelect("to_char(i.payment_date ,'Mon')", "month")
+                  .addSelect("SUM(i.total_without_fee)", "total")
+                  .leftJoin("purchases.invoice", "i")
+                  .leftJoin("purchases.event", "ev")
+                  .leftJoin("purchases.productor", "pr")
+                  .where("pr.id = :productorId", { productorId: user.id })
+                  .andWhere("ev.id = :eventId", { eventId: params.eventId })
+                  .groupBy("ev.title")
+                  .addGroupBy("to_char(i.payment_date ,'Mon')");
+
+    if (params.year) {
+      query.andWhere("to_char(i.payment_date, 'YYYY') = :year", { year: params.year });
+    }
+
+    return await query.getRawMany();
+  }
+
+  async getReportByProvince(user: UserEntity, params: any) {
+    const query = this.purchaseRepository.createQueryBuilder("purchases")
+                  .select("pro.name", "province")
+                  .addSelect("COUNT(*)", "total")
+                  .leftJoin("purchases.user", "u")
+                  .leftJoin("u.province", "pro")
+                  .leftJoin("purchases.productor", "pr")
+                  .where("pr.id = :productorId", { productorId: user.id })
+                  .groupBy("pro.name");
+
+    return await query.getRawMany();
   }
 }

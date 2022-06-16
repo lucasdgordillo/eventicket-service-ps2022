@@ -7,7 +7,6 @@ import { map, switchMap } from 'rxjs/operators';
 import { UserEntity } from 'src/user/entities/user.entity';
 import { User } from 'src/user/models/user.interface';
 import { Repository } from 'typeorm';
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -44,6 +43,10 @@ export class AuthService {
         )
       })
     )
+  }
+
+  async getUserInformation(email) {
+    return await this.userRepository.findOne({ where: { email: email }});
   }
 
   validateUser(email: string, password: string): Observable<User> {

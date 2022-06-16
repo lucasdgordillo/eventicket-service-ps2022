@@ -42,7 +42,7 @@ export class EventEntity {
   @JoinColumn()
   place: EventPlaceEntity;
 
-  @OneToMany(() => EventPriceEntity, eventPrice => eventPrice.event, { cascade: ["insert", "soft-remove", "update"], onDelete: "CASCADE", onUpdate: 'CASCADE' })
+  @OneToMany(() => EventPriceEntity, eventPrice => eventPrice.event, { cascade: true })
   prices: EventPriceEntity[];
 
   // Fecha del evento gral (ej 18/03/2022)
