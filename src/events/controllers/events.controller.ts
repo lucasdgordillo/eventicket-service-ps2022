@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { EventDto } from '../dtos/event.dto';
+import { EventFilterDto } from '../dtos/eventFilter.dto';
 import { EventPricesService } from '../services/eventPrinces.service';
 import { EventsService } from '../services/events.service';
 
@@ -37,9 +38,12 @@ export class EventsController {
 
   @UseGuards(JwtGuard)
   @Get()
-  async getEvents(@Request() req) {
-    const data = await this.eventsService.getAllEvents(req.user);
-    return { data };
+  async getEvents(@Query() filterData: EventFilterDto, @Request() req) {
+    return this.eventsService.getAllEvents(req.user, filterData).then(async (events) => {
+      return { data: events };
+    }).catch(e => {
+      throw new HttpException(e.response, e.status);
+    });
   }
 
   @Get(':id')

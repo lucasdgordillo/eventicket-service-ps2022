@@ -17,4 +17,14 @@ export class UserController {
       throw new HttpException(e.response, e.status);
     });
   }
+
+  @UseGuards(JwtGuard)
+  @Get('/productor-users')
+  async getProductorUsers() {
+    return this.usersService.getAllProductorUsers().then(async (users) => {
+      return { data: users };
+    }).catch(e => {
+      throw new HttpException(e.response, e.status);
+    });
+  }
 }
