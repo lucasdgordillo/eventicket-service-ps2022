@@ -60,9 +60,14 @@ export class PurchasesService {
                   .addSelect("COUNT(*)", "total")
                   .leftJoin("purchases.user", "u")
                   .leftJoin("u.province", "pro")
+                  .leftJoin("purchases.event", "ev")
                   .leftJoin("purchases.productor", "pr")
                   .where("pr.id = :productorId", { productorId: user.id })
                   .groupBy("pro.name");
+    
+    if (params.eventId) {
+      query.andWhere("ev.id = :eventId", { eventId: params.eventId });
+    }                  
 
     return await query.getRawMany();
   }
