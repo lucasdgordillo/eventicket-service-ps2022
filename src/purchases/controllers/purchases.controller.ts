@@ -19,6 +19,16 @@ export class PurchasesController {
   ) {}
 
   @UseGuards(JwtGuard)
+  @Get('/scanned-purchases')
+  async getScannedPurchases(@Request() req) {
+    return this.scannedPurchasesService.getAllScannedPurchases(req.user).then(async (scannedPurchases) => {
+      return { data: scannedPurchases };
+    }).catch(e => {
+      throw new HttpException(e.response, e.status);
+    });
+  }
+
+  @UseGuards(JwtGuard)
   @Post('create')
   async registerNewPurchase(@Body() purchaseData: PurchaseDto, @Request() req) {
     const purchaseCode = GenerateCodeHelper.generateRandomAlfanumericCode();
@@ -80,18 +90,6 @@ export class PurchasesController {
           throw new HttpException(e.response, e.status);
         });
       })
-    });
-  }
-
-  @UseGuards(JwtGuard)
-  @Get('/scanned-purchases')
-  async getScannedPurchases(@Request() req) {
-    return this.scannedPurchasesService.getAllScannedPurchases(req.user).then(async (scannedPurchases) => {
-      console.log("largando datos");
-      console.log(scannedPurchases);
-      return { data: scannedPurchases };
-    }).catch(e => {
-      throw new HttpException(e.response, e.status);
     });
   }
 }

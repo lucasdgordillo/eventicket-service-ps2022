@@ -18,8 +18,6 @@ export class ScannedPurchasesService {
   }
 
   async getAllScannedPurchases(user: UserEntity) {
-    console.log(user.id);
-
-    return await this.scannedPurchaseRepository.find();
+    return await this.scannedPurchaseRepository.find({ relations: { checker: true, event: true, purchase: true }, where: { checker: { id: user.id }}});
   }
 }
