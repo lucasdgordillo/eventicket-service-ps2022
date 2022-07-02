@@ -87,6 +87,8 @@ export class PurchasesController {
   @Get('/scanned-purchases')
   async getScannedPurchases(@Request() req) {
     return this.scannedPurchasesService.getAllScannedPurchases(req.user).then(async (scannedPurchases) => {
+      console.log("largando datos");
+      console.log(scannedPurchases);
       return { data: scannedPurchases };
     }).catch(e => {
       throw new HttpException(e.response, e.status);
