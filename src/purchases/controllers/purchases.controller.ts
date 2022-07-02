@@ -1,9 +1,10 @@
-import { Body, Controller, Get, HttpException, Inject, Param, Post, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, Param, Post, Request, UseGuards } from "@nestjs/common";
 import { JwtGuard } from "src/auth/guards/jwt.guard";
 import { RrppService } from "src/user/services/rrpp.service";
 import { PurchaseDto } from "../dtos/purchase.dto";
 import { ScannedPurchaseDto } from "../dtos/scannedPurchase.dto";
-import { PurchaseEntity, PurchaseStatus } from "../entities/purchase.entity";
+import { PurchaseStatus } from "../entities/purchase.entity";
+import { ScannedPurchaseStatus } from "../entities/scannedPurchase.entity";
 import { GenerateCodeHelper } from "../helpers/generateCodes.helper";
 import { PurchasesService } from "../services/purchases.service";
 import { RrppCommissionsService } from "../services/rrppCommissions.service";
@@ -61,7 +62,7 @@ export class PurchasesController {
   @UseGuards(JwtGuard)
   @Get(':purchase_code')
   async getPurchaseById(@Param('purchase_code') purchaseCode: string) {
-    return this.purchasesService.getPurchaseByCode(purchaseCode, PurchaseStatus.NOT_VERIFIED).then(async (purchase) => {
+    return this.purchasesService.getPurchaseByCodeByStatus(purchaseCode, PurchaseStatus.NOT_VERIFIED).then(async (purchase) => {
       return { data: purchase };
     }).catch(e => {
       throw new HttpException(e.response, e.status);
@@ -74,22 +75,37 @@ export class PurchasesController {
     if (!purchaseData.purchase_code) { throw new HttpException('PURCHASE_CODE_REQUIRED', 400);}
     if (!purchaseData.scanned_date) { throw new HttpException('PURCHASE_SCANNED_DATE_REQUIRED', 400);}
 
-    return this.purchasesService.getPurchaseByCode(purchaseData.purchase_code, PurchaseStatus.NOT_VERIFIED).then(async (purchase) => {
+    return this.purchasesService.getPurchaseByCode(purchaseData.purchase_code).then(async (purchase) => {
       if (!purchase) { throw new HttpException('PURCHASE_CODE_INVALID', 404); }
-      
-      return this.purchasesService.updatePurchaseStatus(purchase.id, PurchaseStatus.VERIFIED).then(async () => {
+      if (purchase.status !== PurchaseStatus.NOT_VERIFIED) { 
         const scannedData: ScannedPurchaseDto = {
           purchase: purchase,
           scanned_date: purchaseData.scanned_date,
           event: purchase.event,
-          purchase_code: purchaseData.purchase_code
+          purchase_code: purchaseData.purchase_code,
+          status: ScannedPurchaseStatus.REJECTED
         };
         return this.scannedPurchasesService.createNewScannedPurchase(scannedData, req.user).then((response) => {
-          return { message: 'Validate Success' };
+          throw new HttpException('PURCHASE_CODE_INVALID', 404);
         }).catch(e => {
           throw new HttpException(e.response, e.status);
         });
-      })
+      } else {
+        return this.purchasesService.updatePurchaseStatus(purchase.id, PurchaseStatus.VERIFIED).then(async () => {
+          const scannedData: ScannedPurchaseDto = {
+            purchase: purchase,
+            scanned_date: purchaseData.scanned_date,
+            event: purchase.event,
+            purchase_code: purchaseData.purchase_code,
+            status: ScannedPurchaseStatus.APPROVED
+          };
+          return this.scannedPurchasesService.createNewScannedPurchase(scannedData, req.user).then((response) => {
+            return { message: 'Validate Success' };
+          }).catch(e => {
+            throw new HttpException(e.response, e.status);
+          });
+        })
+      }
     });
   }
 }

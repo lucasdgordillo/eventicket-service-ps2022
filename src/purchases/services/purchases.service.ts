@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Observable } from "rxjs";
 import { UserEntity } from "src/user/entities/user.entity";
 import { Role } from "src/user/models/role.enum";
 import { Repository } from "typeorm";
@@ -30,8 +29,12 @@ export class PurchasesService {
     return await this.purchaseRepository.find();
   }
 
-  async getPurchaseByCode(purchaseCode, status: PurchaseStatus) {
+  async getPurchaseByCodeByStatus(purchaseCode, status: PurchaseStatus) {
     return await this.purchaseRepository.findOne({ relations: { event: true, productor: { province: true }, user: { province: true }, invoice: { invoice_details: true, payment_info: true } }, where: { purchase_code: purchaseCode, status: status }});
+  }
+
+  async getPurchaseByCode(purchaseCode) {
+    return await this.purchaseRepository.findOne({ relations: { event: true, productor: { province: true }, user: { province: true }, invoice: { invoice_details: true, payment_info: true } }, where: { purchase_code: purchaseCode }});
   }
 
   async getReportBySales(user: UserEntity, params: any) {
